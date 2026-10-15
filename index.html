@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>First Lab</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; background: #f2f5ef; color: #203b32; font-family: system-ui, sans-serif; }
+    main { width: min(100%, 640px); padding: clamp(28px, 7vw, 64px); background: white; border: 1px solid #dce5d9; border-radius: 24px; box-shadow: 0 20px 70px #203b3210; }
+    .label { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #658173; }
+    h1 { margin: 24px 0 16px; font-size: clamp(40px, 9vw, 64px); line-height: 1.05; letter-spacing: -.05em; }
+    p { color: #607268; font-size: 18px; line-height: 1.6; }
+    button { margin-top: 20px; border: 0; border-radius: 12px; padding: 15px 22px; background: #275d46; color: white; font: inherit; font-weight: 600; cursor: pointer; }
+    button:hover { background: #194530; }
+    button:focus-visible { outline: 3px solid #83b99a; outline-offset: 4px; }
+    #message { min-height: 29px; margin-bottom: 0; font-size: 15px; }
+  </style>
+</head>
+<body>
+  <main>
+    <span class="label">First Lab / Hello, world</span>
+    <h1>Something great<br>starts here.</h1>
+    <p>Welcome to your first webpage. A small space to experiment, learn, and bring your ideas to life.</p>
+    <button type="button" id="hello">Say hello ↗</button>
+    <p id="message" role="status"></p>
+  </main>
+  <script>
+    document.getElementById('hello').addEventListener('click', () => {
+      document.getElementById('message').textContent = 'Hello! Your first experiment is working. ✨';
+    });
+  </script>
+</body>
+</html>
