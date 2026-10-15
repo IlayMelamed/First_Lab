@@ -1,34 +1,85 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>First Lab</title>
-  <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; background: #f2f5ef; color: #203b32; font-family: system-ui, sans-serif; }
-    main { width: min(100%, 640px); padding: clamp(28px, 7vw, 64px); background: white; border: 1px solid #dce5d9; border-radius: 24px; box-shadow: 0 20px 70px #203b3210; }
-    .label { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #658173; }
-    h1 { margin: 24px 0 16px; font-size: clamp(40px, 9vw, 64px); line-height: 1.05; letter-spacing: -.05em; }
-    p { color: #607268; font-size: 18px; line-height: 1.6; }
-    button { margin-top: 20px; border: 0; border-radius: 12px; padding: 15px 22px; background: #275d46; color: white; font: inherit; font-weight: 600; cursor: pointer; }
-    button:hover { background: #194530; }
-    button:focus-visible { outline: 3px solid #83b99a; outline-offset: 4px; }
-    #message { min-height: 29px; margin-bottom: 0; font-size: 15px; }
-  </style>
+  <meta name="theme-color" content="#112f3b">
+  <meta name="description" content="Your keyboard is the defense. A colorful arcade typing game with ten missions, a glowing energy shield, and a sky full of words.">
+  <title>Iron Dome — Typing Defense</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="game-core.js" defer></script>
+  <script src="renderer.js" defer></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <main>
-    <span class="label">First Lab / Hello, world</span>
-    <h1>Something great<br>starts here.</h1>
-    <p>Welcome to your first webpage. A small space to experiment, learn, and bring your ideas to life.</p>
-    <button type="button" id="hello">Say hello ↗</button>
-    <p id="message" role="status"></p>
-  </main>
-  <script>
-    document.getElementById('hello').addEventListener('click', () => {
-      document.getElementById('message').textContent = 'Hello! Your first experiment is working. ✨';
-    });
-  </script>
+  <div class="app-shell">
+    <header class="site-header">
+      <a href="#home" class="brand" aria-label="Iron Dome home" data-action="home">
+        <svg class="brand-mark" viewBox="0 0 40 44" aria-hidden="true"><path d="M20 2 37 9v13c0 10-17 20-17 20S3 32 3 22V9Z" fill="currentColor"/><path d="m11 24 9-12 9 12M14 24h12M20 13v18" fill="none" stroke="#f7f5ed" stroke-width="2.6" stroke-linejoin="round"/></svg>
+        <span>IRON DOME<small>TYPING DEFENSE</small></span>
+      </a>
+      <nav aria-label="Main navigation">
+        <button data-action="home" class="nav-link active">Command center</button>
+        <button data-action="levels" class="nav-link">Missions <span class="nav-count">10</span></button>
+        <button data-action="scores" class="nav-link">High scores</button>
+      </nav>
+      <div class="header-actions"><button class="icon-button" id="sound-button" aria-label="Mute sound effects" title="Toggle sound effects">♪</button><button class="icon-button" data-action="settings" aria-label="Settings" title="Settings">⚙</button></div>
+    </header>
+    <main id="main-content">
+      <section id="home-screen" class="screen home-screen" aria-labelledby="home-title">
+        <div class="hero">
+          <img class="hero-art" src="assets/menu-art.png" alt="Illustrated coastline protected by a glowing blue energy dome, with cartoon rockets overhead" fetchpriority="high">
+          <div class="hero-shade"></div>
+          <div class="hero-content">
+            <div class="eyebrow"><span class="status-dot"></span> THE SKY IS YOUR RESPONSIBILITY</div>
+            <h1 id="home-title">IRON<br>DOME<span>TYPING DEFENSE</span></h1>
+            <p class="hero-description">Quick fingers. Clear skies.<br>Turn every word into a line of defense.</p>
+            <button class="primary-button play-button" data-action="play"><span class="play-triangle">▶</span><span>PLAY<small id="continue-label">MISSION 01 · FIRST WATCH</small></span><span class="button-arrow">↗</span></button>
+            <div class="hero-secondary"><button data-action="levels">Select level <span>↗</span></button><button data-action="help">How to play <span>?</span></button></div>
+            <div class="keyboard-note"><span class="key-icon">⌨</span> A keyboard. A little focus. You’ve got this.</div>
+          </div>
+          <div class="hero-status"><span class="status-dot"></span><div>SHIELD ONLINE<small>Ready when you are.</small></div><svg width="54" height="28" viewBox="0 0 54 28" aria-hidden="true"><path d="M1 23h8l5-8 6 10L31 3l8 18h14" fill="none" stroke="#70e1d8" stroke-width="2"/></svg></div>
+          <div class="hero-caption">01 / DEFEND THE DOME</div>
+        </div>
+        <div class="briefing-strip">
+          <div class="briefing-title"><span class="tiny-label">YOUR MISSION</span><strong>Make every keystroke count.</strong></div>
+          <div class="briefing-item"><span class="briefing-number">01</span><p><strong>Spot the word.</strong><span>Every threat has a name.</span></p></div>
+          <div class="briefing-item"><span class="briefing-number">02</span><p><strong>Type. Hit Enter.</strong><span>Send your interceptor skyward.</span></p></div>
+          <div class="briefing-item"><span class="briefing-number">03</span><p><strong>Keep the sky clear.</strong><span>Survive. Level up. Go again.</span></p></div>
+        </div>
+        <div class="home-bottom"><span><span class="small-dot"></span> 10 MISSIONS <i>/</i> 5 THREAT TYPES <i>/</i> ONE KEYBOARD</span><button class="text-button" data-action="scores">Your personal best <strong id="personal-best">—</strong> ↗</button></div>
+      </section>
+      <section id="levels-screen" class="screen content-screen" hidden aria-labelledby="levels-title">
+        <div class="page-heading"><div><span class="eyebrow dark">THE FLIGHT PLAN</span><h2 id="levels-title">Choose your mission.</h2><p>Start steady. Build your speed. Keep the shield standing.</p></div><button class="outline-button" data-action="home">← Command center</button></div>
+        <div id="level-grid" class="level-grid"></div>
+        <p class="muted-note">Complete a mission to unlock the next. Your progress is saved in this browser.</p>
+      </section>
+      <section id="scores-screen" class="screen content-screen" hidden aria-labelledby="scores-title">
+        <div class="page-heading"><div><span class="eyebrow dark">A RECORD WORTH KEEPING</span><h2 id="scores-title">The honor roll.</h2><p>Your ten best missions, saved on this device.</p></div><button class="outline-button" data-action="home">← Command center</button></div>
+        <div class="table-wrap"><table><thead><tr><th>RANK</th><th>CALLSIGN</th><th>SCORE</th><th>MISSION</th><th>AVG. WPM</th><th>ACCURACY</th><th>DATE</th></tr></thead><tbody id="scores-body"></tbody></table><div id="empty-scores" class="empty-state"><span>✦</span><h3>Your story starts in the sky.</h3><p>Finish your first mission to put a score on the board.</p><button class="primary-button" data-action="play">Play your first mission ↗</button></div></div>
+      </section>
+      <section id="help-screen" class="screen content-screen" hidden aria-labelledby="help-title">
+        <div class="page-heading"><div><span class="eyebrow dark">A QUICK BRIEFING</span><h2 id="help-title">Words are your defense.</h2><p>Simple controls. A wonderfully busy sky.</p></div><button class="outline-button" data-action="home">← Command center</button></div>
+        <div class="help-layout"><div class="help-main"><div class="help-demo"><span class="demo-word"><em>shi</em>eld</span><span class="demo-rocket">➤</span><div class="demo-input">shield <kbd>ENTER ↵</kbd></div></div><ol class="instructions"><li><strong>Read the incoming words.</strong> Each word belongs to a threat. Matching letters light up as you type.</li><li><strong>Type the whole word and press Enter.</strong> A correct word immediately neutralizes the threat, then your interceptor puts on the show. Uppercase and lowercase both work.</li><li><strong>Beat the blue boundary.</strong> Each threat that crosses the shield costs one heart. You begin with five.</li><li><strong>Survive the countdown.</strong> Earn points, complete the mission, and unlock the next challenge.</li></ol></div><aside class="help-side"><h3>A few things to know</h3><p><kbd>ENTER</kbd> submits and clears your input. A wrong word launches nothing. Try again immediately.</p><p><kbd>BACKSPACE</kbd> fixes a typo. <kbd>ESC</kbd> pauses. Switching tabs also pauses the game.</p><p><strong>12 in a row = +1 heart.</strong> Build up to eight hearts. A wrong submission or a shield breach breaks the streak.</p><p><strong>More speed, more points.</strong> Fast interceptions and streaks add bonuses. Finish with perfect submission accuracy for an extra reward.</p><p class="metric-note">WPM = correctly intercepted characters ÷ 5 ÷ gameplay minutes. Live WPM uses the last 15 seconds; average includes idle gameplay time. Pauses are excluded. Accuracy compares accepted characters with all submitted characters.</p></aside></div>
+        <div id="threat-guide" class="threat-guide"></div>
+        <button class="primary-button" data-action="play">Ready. Let’s defend. ↗</button>
+      </section>
+      <section id="settings-screen" class="screen content-screen" hidden aria-labelledby="settings-title">
+        <div class="page-heading"><div><span class="eyebrow dark">MAKE IT YOURS</span><h2 id="settings-title">Your command setup.</h2><p>Small adjustments for your best game.</p></div><button class="outline-button" data-action="home">← Command center</button></div>
+        <div class="settings-panel"><label class="setting-row"><span><strong>Player callsign</strong><small>Your name on the local high-score board.</small></span><input id="nickname-setting" maxlength="18" placeholder="Defender" autocomplete="off"></label><label class="setting-row"><span><strong>Sound effects</strong><small>Soft launch sounds, shield alerts, and celebrations.</small></span><input id="sound-setting" type="checkbox" class="switch" role="switch"></label><label class="setting-row"><span><strong>Animation quality</strong><small>Fewer particles can help on older devices.</small></span><select id="quality-setting"><option value="high">High detail</option><option value="low">Performance</option></select></label><label class="setting-row"><span><strong>Reduced motion</strong><small>Reduce ambient movement and decorative effects.</small></span><input id="motion-setting" type="checkbox" class="switch" role="switch"></label><div class="settings-save"><span id="settings-status">Changes save automatically.</span><button class="primary-button" data-action="home">All set ↗</button></div></div>
+      </section>
+      <section id="game-screen" class="screen game-screen" hidden aria-label="Typing defense game">
+        <div class="game-hud"><div class="health-block"><div class="tiny-label" id="mission-label">MISSION 01 · FIRST WATCH</div><div id="hearts" class="hearts" aria-label="5 hearts remaining"></div></div><div class="timer-block"><div class="timer-label">HOLD THE LINE</div><div id="timer" class="timer">01:00</div><div class="progress-track"><div id="progress-fill"></div></div></div><div class="score-block"><span class="tiny-label">TOTAL SCORE</span><strong id="score">0</strong><div><span><b id="live-wpm">0</b> WPM</span><span class="streak-label">ϟ <b id="streak">0</b> STREAK</span></div></div><button id="pause-button" class="pause-button" aria-label="Pause game" title="Pause (Escape)">Ⅱ</button></div>
+        <div class="arena"><canvas id="game-canvas" aria-label="Map showing incoming words, launch zones, and the protective dome over Israel"></canvas><div class="arena-coordinate">DEFENSE SECTOR / 31.5° N, 34.8° E</div><div class="arena-legend"><span></span> SHIELD BOUNDARY</div><div id="game-toast" class="game-toast" role="status" aria-live="polite"></div></div>
+        <div class="command-bar"><div class="command-side"><span class="status-dot"></span><div>DEFENSE ONLINE<small id="target-status">Awaiting your command</small></div></div><form id="typing-form" autocomplete="off"><label for="typing-input">TYPE TO INTERCEPT <span>•</span> PRESS ENTER</label><div class="input-shell"><span class="input-crosshair">⌖</span><input id="typing-input" aria-label="Type a threat word and press Enter" placeholder="Type a word…" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text" maxlength="32"><button type="submit" aria-label="Submit word">ENTER ↵</button></div><span id="input-feedback" aria-live="polite">Eyes on the sky. Fingers on the keys.</span></form><div class="command-side command-right"><strong id="accuracy">100<small>%</small></strong><span>ACCURACY</span></div></div>
+        <div class="small-screen-note">Best played with a physical keyboard in a wider window.</div>
+      </section>
+    </main>
+    <footer class="site-footer"><span>IRON DOME <span class="footer-slash">/</span> A LITTLE FOCUS GOES A LONG WAY.</span><span>Fictional arcade scenario. Launch zones do not represent residents or governments.</span></footer>
+  </div>
+  <div id="modal-backdrop" class="modal-backdrop" hidden><section id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1"></section></div>
+  <div id="storage-notice" class="storage-notice" hidden>Browser storage is unavailable. This session’s progress will stay in memory.</div>
+  <noscript><div class="noscript">Enable JavaScript to play Iron Dome: Typing Defense.</div></noscript>
 </body>
 </html>
