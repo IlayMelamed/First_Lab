@@ -22,7 +22,7 @@ There are ten timed missions, from 10–15 WPM to 60+ WPM, and five threat class
 
 Base scores are 50 (small drone), 100 (UAV), 150 (cruise missile), 250 (ballistic), and 400 (heavy ballistic). Early interceptions earn up to 40% extra. Every third consecutive interception increases the streak bonus by five points, capped at 100 bonus points per target.
 
-Completing a mission earns `500 + 150 × zero-based mission index + 75 × remaining hearts`. Completing with at least one submission and no incorrect submissions adds 250. Scores are per mission. Finishing unlocks the next mission; completed missions remain replayable.
+Completing a mission earns `500 + 150 × zero-based mission index + 75 × remaining hearts`. Completing with at least one submission and no incorrect submissions adds 250. Scores are per mission. All ten missions are playable from the start. Choose any mission from Select Level; completion badges and best scores are still saved. Play continues with the first incomplete mission.
 
 The difficulty director budgets workload using expected characters per second, active letter count, reaction time, outstanding deadlines, and per-level concurrency limits. It only admits a threat when an earliest-deadline schedule remains feasible. It allocates long words longer deadlines and heavy threats a launch warning, and avoids repeated words and crowded launch sectors. Difficulty does not secretly adapt to player performance.
 

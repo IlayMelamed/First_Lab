@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="game-core.js" defer></script>
   <script src="renderer.js" defer></script>
-  <script src="script.js" defer></script>
+  <script src="script.js?v=2" defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -53,7 +53,7 @@
       <section id="levels-screen" class="screen content-screen" hidden aria-labelledby="levels-title">
         <div class="page-heading"><div><span class="eyebrow dark">THE FLIGHT PLAN</span><h2 id="levels-title">Choose your mission.</h2><p>Start steady. Build your speed. Keep the shield standing.</p></div><button class="outline-button" data-action="home">← Command center</button></div>
         <div id="level-grid" class="level-grid"></div>
-        <p class="muted-note">Complete a mission to unlock the next. Your progress is saved in this browser.</p>
+        <p class="muted-note">All ten missions are ready to play. Choose your pace. Your progress is saved in this browser.</p>
       </section>
       <section id="scores-screen" class="screen content-screen" hidden aria-labelledby="scores-title">
         <div class="page-heading"><div><span class="eyebrow dark">A RECORD WORTH KEEPING</span><h2 id="scores-title">The honor roll.</h2><p>Your ten best missions, saved on this device.</p></div><button class="outline-button" data-action="home">← Command center</button></div>
@@ -61,7 +61,7 @@
       </section>
       <section id="help-screen" class="screen content-screen" hidden aria-labelledby="help-title">
         <div class="page-heading"><div><span class="eyebrow dark">A QUICK BRIEFING</span><h2 id="help-title">Words are your defense.</h2><p>Simple controls. A wonderfully busy sky.</p></div><button class="outline-button" data-action="home">← Command center</button></div>
-        <div class="help-layout"><div class="help-main"><div class="help-demo"><span class="demo-word"><em>shi</em>eld</span><span class="demo-rocket">➤</span><div class="demo-input">shield <kbd>ENTER ↵</kbd></div></div><ol class="instructions"><li><strong>Read the incoming words.</strong> Each word belongs to a threat. Matching letters light up as you type.</li><li><strong>Type the whole word and press Enter.</strong> A correct word immediately neutralizes the threat, then your interceptor puts on the show. Uppercase and lowercase both work.</li><li><strong>Beat the blue boundary.</strong> Each threat that crosses the shield costs one heart. You begin with five.</li><li><strong>Survive the countdown.</strong> Earn points, complete the mission, and unlock the next challenge.</li></ol></div><aside class="help-side"><h3>A few things to know</h3><p><kbd>ENTER</kbd> submits and clears your input. A wrong word launches nothing. Try again immediately.</p><p><kbd>BACKSPACE</kbd> fixes a typo. <kbd>ESC</kbd> pauses. Switching tabs also pauses the game.</p><p><strong>12 in a row = +1 heart.</strong> Build up to eight hearts. A wrong submission or a shield breach breaks the streak.</p><p><strong>More speed, more points.</strong> Fast interceptions and streaks add bonuses. Finish with perfect submission accuracy for an extra reward.</p><p class="metric-note">WPM = correctly intercepted characters ÷ 5 ÷ gameplay minutes. Live WPM uses the last 15 seconds; average includes idle gameplay time. Pauses are excluded. Accuracy compares accepted characters with all submitted characters.</p></aside></div>
+        <div class="help-layout"><div class="help-main"><div class="help-demo"><span class="demo-word"><em>shi</em>eld</span><span class="demo-rocket">➤</span><div class="demo-input">shield <kbd>ENTER ↵</kbd></div></div><ol class="instructions"><li><strong>Read the incoming words.</strong> Each word belongs to a threat. Matching letters light up as you type.</li><li><strong>Type the whole word and press Enter.</strong> A correct word immediately neutralizes the threat, then your interceptor puts on the show. Uppercase and lowercase both work.</li><li><strong>Beat the blue boundary.</strong> Each threat that crosses the shield costs one heart. You begin with five.</li><li><strong>Survive the countdown.</strong> Earn points, complete the mission, and choose your next challenge.</li></ol></div><aside class="help-side"><h3>A few things to know</h3><p><kbd>ENTER</kbd> submits and clears your input. A wrong word launches nothing. Try again immediately.</p><p><kbd>BACKSPACE</kbd> fixes a typo. <kbd>ESC</kbd> pauses. Switching tabs also pauses the game.</p><p><strong>12 in a row = +1 heart.</strong> Build up to eight hearts. A wrong submission or a shield breach breaks the streak.</p><p><strong>More speed, more points.</strong> Fast interceptions and streaks add bonuses. Finish with perfect submission accuracy for an extra reward.</p><p class="metric-note">WPM = correctly intercepted characters ÷ 5 ÷ gameplay minutes. Live WPM uses the last 15 seconds; average includes idle gameplay time. Pauses are excluded. Accuracy compares accepted characters with all submitted characters.</p></aside></div>
         <div id="threat-guide" class="threat-guide"></div>
         <button class="primary-button" data-action="play">Ready. Let’s defend. ↗</button>
       </section>

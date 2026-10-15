@@ -78,8 +78,7 @@
   let toastUntil = 0, toastPriority = 0, feedbackUntil = 0, lastHearts = -1, composing = false, savedResult = false;
   const input = $('typing-input'), modal = $('modal'), backdrop = $('modal-backdrop');
 
-  function unlocked(i) { return i === 0 || profile.completed.includes(i-1); }
-  function nextMission() { return LEVELS.findIndex((_,i) => unlocked(i) && !profile.completed.includes(i)); }
+  function nextMission() { return LEVELS.findIndex((_,i) => !profile.completed.includes(i)); }
   function updateHome() {
     const i = nextMission();
     $('continue-label').textContent = i < 0 ? 'ALL MISSIONS COMPLETE · PLAY AGAIN' : `MISSION ${String(i+1).padStart(2,'0')} · ${LEVELS[i].name.toUpperCase()}`;
@@ -88,8 +87,8 @@
   function renderLevels() {
     const next = nextMission();
     $('level-grid').innerHTML = LEVELS.map((level,i) => {
-      const open = unlocked(i), done = profile.completed.includes(i);
-      return `<button class="level-card ${i===next?'current':''}" ${open?'':'disabled'} data-level="${i}" aria-label="Mission ${i+1}, ${level.name}, ${open ? done?'completed, replay':'unlocked' : 'locked'}"><span class="level-number">${String(i+1).padStart(2,'0')}</span><span class="level-status">${done?'✓':open?'↗':'⌑'}</span><h3>${level.name}</h3><span class="level-difficulty">${level.difficulty}</span><div class="level-specs"><span>${level.wpmMax?`${level.wpmMin}–${level.wpmMax}`:`${level.wpmMin}+`} WPM</span><span>${level.duration} SEC</span></div><span class="level-best">${done?'COMPLETE · ':open?'BEST · ':'LOCKED · '}${open?format(profile.best[i]||0):`FINISH MISSION ${i}`}</span></button>`;
+      const done = profile.completed.includes(i);
+      return `<button class="level-card ${i===next?'current':''}" data-level="${i}" aria-label="Mission ${i+1}, ${level.name}, ${done?'completed, replay':'ready to play'}"><span class="level-number">${String(i+1).padStart(2,'0')}</span><span class="level-status">${done?'✓':'↗'}</span><h3>${level.name}</h3><span class="level-difficulty">${level.difficulty}</span><div class="level-specs"><span>${level.wpmMax?`${level.wpmMin}–${level.wpmMax}`:`${level.wpmMin}+`} WPM</span><span>${level.duration} SEC</span></div><span class="level-best">${done?'COMPLETE · ':'BEST · '}${format(profile.best[i]||0)}</span></button>`;
     }).join('');
   }
   function renderScores() {
@@ -122,7 +121,7 @@
   }
   function focusInput() { if (mode === 'playing' && screen === 'game' && !document.hidden) input.focus({preventScroll:true}); }
   function startLevel(index) {
-    if (!Number.isInteger(index) || index < 0 || index >= LEVELS.length || !unlocked(index)) return;
+    if (!Number.isInteger(index) || index < 0 || index >= LEVELS.length) return;
     hideModal(); renderer.reset(); visualTime = 0; lastFrame = null;
     lastHearts = -1; savedResult = false; toastUntil = 0; toastPriority = 0; feedbackUntil = 0;
     input.value = ''; input.disabled = false; input.parentElement.classList.remove('error','success');
@@ -203,7 +202,13 @@
   }
   function showResult(event) {
     const s=event.stats, final=game.levelIndex===9;
-    showModal(`<div class="modal-badge ${event.won?'':'loss'}">${event.won?'✦':'♡'}</div><span class="eyebrow dark">${event.won?'LEVEL COMPLETE — ISRAEL DEFENDED!':'MISSION ENDED · GAME OVER'}</span><h2 id="modal-title">${event.won?final?'An unbreakable defense.':'A sky worth celebrating.':'Every defender starts somewhere.'}</h2><p class="modal-subtitle">${event.won?final?'All ten missions complete. Come back and beat your best.':`${game.level.name} complete. Your next mission is unlocked.`:'Take a breath, find your rhythm, and give it another go.'}</p><div class="result-score">${format(game.score)}</div><div class="result-score-label">TOTAL MISSION SCORE</div><div class="result-grid"><div><strong>${Math.round(s.averageWpm)}</strong><span>AVERAGE WPM</span></div><div><strong>${s.accuracy.toFixed(1)}%</strong><span>ACCURACY</span></div><div><strong>${s.successful}</strong><span>INTERCEPTED</span></div><div><strong>${game.hearts}</strong><span>HEARTS LEFT</span></div><div><strong>${s.longestStreak}</strong><span>BEST STREAK</span></div><div><strong>${timeLabel(s.elapsed)}</strong><span>MISSION TIME</span></div></div><p class="result-note">Peak ${Math.round(s.peakWpm)} WPM · ${s.missed} shield ${s.missed===1?'breach':'breaches'}${event.won?` · +${format(event.completionBonus)} completion bonus`:''}<br>Saved for ${escapeHtml(profile.nickname)} in this browser.</p><div class="modal-actions">${event.won&&!final?'<button class="primary-button" data-action="next">Next mission ↗</button>':''}<button class="${event.won&&!final?'outline-button':'primary-button'}" data-action="restart">${event.won?'Replay level':'Retry level ↗'}</button><button class="text-button" data-action="home">Main menu</button></div>`);
+    let subtitle = 'Take a breath, find your rhythm, and give it another go.';
+    if (event.won) {
+      subtitle = `${game.level.name} complete. Ready for your next mission?`;
+      if (final) subtitle = 'The final mission is defended. Try another level or beat your best.';
+      if (profile.completed.length === LEVELS.length) subtitle = 'All ten missions complete. Come back and beat your best.';
+    }
+    showModal(`<div class="modal-badge ${event.won?'':'loss'}">${event.won?'✦':'♡'}</div><span class="eyebrow dark">${event.won?'LEVEL COMPLETE — ISRAEL DEFENDED!':'MISSION ENDED · GAME OVER'}</span><h2 id="modal-title">${event.won?final?'An unbreakable defense.':'A sky worth celebrating.':'Every defender starts somewhere.'}</h2><p class="modal-subtitle">${subtitle}</p><div class="result-score">${format(game.score)}</div><div class="result-score-label">TOTAL MISSION SCORE</div><div class="result-grid"><div><strong>${Math.round(s.averageWpm)}</strong><span>AVERAGE WPM</span></div><div><strong>${s.accuracy.toFixed(1)}%</strong><span>ACCURACY</span></div><div><strong>${s.successful}</strong><span>INTERCEPTED</span></div><div><strong>${game.hearts}</strong><span>HEARTS LEFT</span></div><div><strong>${s.longestStreak}</strong><span>BEST STREAK</span></div><div><strong>${timeLabel(s.elapsed)}</strong><span>MISSION TIME</span></div></div><p class="result-note">Peak ${Math.round(s.peakWpm)} WPM · ${s.missed} shield ${s.missed===1?'breach':'breaches'}${event.won?` · +${format(event.completionBonus)} completion bonus`:''}<br>Saved for ${escapeHtml(profile.nickname)} in this browser.</p><div class="modal-actions">${event.won&&!final?'<button class="primary-button" data-action="next">Next mission ↗</button>':''}<button class="${event.won&&!final?'outline-button':'primary-button'}" data-action="restart">${event.won?'Replay level':'Retry level ↗'}</button><button class="text-button" data-action="home">Main menu</button></div>`);
   }
   function action(name) {
     if (['home','levels','scores','help','settings'].includes(name)) showScreen(name);
